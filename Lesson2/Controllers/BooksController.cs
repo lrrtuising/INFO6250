@@ -36,4 +36,34 @@ public class BooksController : Controller
         }
         return View(book);
     }
+    
+    // POST: /Books/Orders
+    [HttpPost]
+    public async Task<IActionResult> Order(int bookId, int quantity = 1)
+    {
+        var book = await _db.Books.FindAsync(bookId);
+        if (book == null)
+        {
+            TempData["ErrorMessage"] = "Book not found";
+            return RedirectToAction("Index");
+        }
+        
+        // hard code
+        const int userId = 1;
+        
+        var order = new Order
+        {
+            UserId = userId,
+            BookId = bookId,
+            Quantity = quantity,
+            TotalPrice = book.Price * quantity,
+            OrderDate = DateTime.Now
+        };
+        
+        _db.Orders.Add(order);
+        await _db.SaveChangesAsync();
+        
+        TempData["SuccessMessage"] = "Order placed successfully!";
+        return RedirectToAction("Index");
+    }
 }

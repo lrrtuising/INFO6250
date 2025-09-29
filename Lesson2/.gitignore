@@ -1,0 +1,16 @@
+/.idea
+/.vscode
+*.sln
+
+# Visual Studio
+.vs/
+
+# macOS
+.DS_Store
+
+# Build artifacts
+[Oo]bj/
+[Bb]in/
+[Rr]elease/
+[Dd]ebug/
+mysql_data/

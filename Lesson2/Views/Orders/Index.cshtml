@@ -1,0 +1,72 @@
+@model List<Lesson2.Models.Order>
+
+@{
+    ViewData["Title"] = "My Orders";
+}
+
+<h2>My Orders</h2>
+
+@if (Model == null || !Model.Any())
+{
+    <div class="alert alert-info">
+        <h4>No orders found</h4>
+        <p>You haven't placed any orders yet.</p>
+        <a href="@Url.Action("Index", "Books")" class="btn btn-primary">Browse Books</a>
+    </div>
+}
+else
+{
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Order History</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Order Date</th>
+                                    <th>Book Title</th>
+                                    <th>Author</th>
+                                    <th>Quantity</th>
+                                    <th>Unit Price</th>
+                                    <th>Total Price</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var order in Model)
+                                {
+                                    <tr>
+                                        <td>@order.OrderDate.ToString("yyyy-MM-dd HH:mm")</td>
+                                        <td>@order.Book.Title</td>
+                                        <td>@order.Book.Author</td>
+                                        <td>@order.Quantity</td>
+                                        <td>$@order.Book.Price.ToString("F2")</td>
+                                        <td><strong>$@order.TotalPrice.ToString("F2")</strong></td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="mt-4">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h5>Order Summary</h5>
+                                <p><strong>Total Orders:</strong> @Model.Count</p>
+                                <p><strong>Total Amount:</strong> $@Model.Sum(o => o.TotalPrice).ToString("F2")</p>
+                            </div>
+                            <div class="col-md-6 text-end">
+                                <a href="@Url.Action("Index", "Books")" class="btn btn-primary">
+                                    <i class="fas fa-book"></i> Continue Shopping
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
